@@ -91,36 +91,57 @@
         <p>Para a entrega final do Projeto Integrador</p>
     </main>
     <script>
-        var boxDia = document.querySelector("main > div > div:first-child > div:first-child")
-        var boxHora = document.querySelector("main > div > div:nth-child(2) > div:first-child")
-        var boxMin = document.querySelector("main > div > div:nth-child(3) > div:first-child")
-        var boxSec = document.querySelector("main > div > div:last-child > div:first-child")
-
-
-        var entregaFinal = new Date("Dec 4, 2018 13:30:00").getTime();
-        // Update the count down every 1 second
-        var x = setInterval(function () {
+        const boxDia = document.querySelector("main > div > div:first-child > div:first-child")
+        const boxHora = document.querySelector("main > div > div:nth-child(2) > div:first-child")
+        const boxMin = document.querySelector("main > div > div:nth-child(3) > div:first-child")
+        const boxSec = document.querySelector("main > div > div:last-child > div:first-child")
+        const background = document.querySelector('body')
+        const entregaFinal = new Date("Dec 4, 2018 13:30:00").getTime();
+        
+        //It will changes the background-color accordly each passing day.
+        let red = 0
+        let green = 255
+        let yesterday = 0
+        const changeBgColor = (days) => {
+            if(days === yesterday) return
+            let colorQuantity = 289 - days
+            if(colorQuantity < 255){
+                red = colorQuantity
+            }else{
+                red = 255
+                green = colorQuantity - 255
+            }
+            yesterday = days
+            background.style.backgroundColor = 'rgb(' + red + ',' + green + ',0)'
+        }
+        
+        const countDown = () => {
             // Get todays date and time
-            var horarioAtual = new Date().getTime();
+            let horarioAtual = new Date().getTime();
             // Find the distance between now an the count down date
-            var distancia = entregaFinal - horarioAtual;
+            let distancia = entregaFinal - horarioAtual;
             // Time calculations for days, hours, minutes and seconds
-            var days = Math.floor(distancia / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distancia % (1000 * 60)) / 1000);
+            let days = Math.floor(distancia / (1000 * 60 * 60 * 24));
+            let hours = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((distancia % (1000 * 60)) / 1000);
             
             boxDia.innerHTML = days
             boxHora.innerHTML = hours
             boxMin.innerHTML = minutes
             boxSec.innerHTML = seconds
-
+            
+            changeBgColor(days);
+            
             // If the count down is over, write some text 
             if (distancia < 0) {
                 clearInterval(x);
                 document.getElementById("demo").innerHTML = "EXPIRED";
             }
-        }, 1000);
+        }
+        
+        // Update the count down every 1 second
+        const x = setInterval(countDown, 1000);
     </script>
 </body>
 </html>
